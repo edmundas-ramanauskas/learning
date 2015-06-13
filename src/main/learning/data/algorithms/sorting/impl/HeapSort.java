@@ -32,14 +32,14 @@ public class HeapSort implements SortStrategy {
     private void heapify(int i) {
         int largestElementIndex = i;
 
-        int l = leftChild(i);
-        if (l < size && compare(data[largestElementIndex], data[l], reverse) > 0) {
-            largestElementIndex = l;
+        int left = leftChild(i);
+        if (left < size && compare(data[largestElementIndex], data[left], reverse) > 0) {
+            largestElementIndex = left;
         }
 
-        int r = rightChild(i);
-        if (r < size && compare(data[largestElementIndex], data[r], reverse) > 0) {
-            largestElementIndex = r;
+        int right = rightChild(i);
+        if (right < size && compare(data[largestElementIndex], data[right], reverse) > 0) {
+            largestElementIndex = right;
         }
 
         if (largestElementIndex != i) {

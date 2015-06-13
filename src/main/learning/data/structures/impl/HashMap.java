@@ -26,22 +26,18 @@ public class HashMap<K, V> implements Map<K,V> {
         mask = table.length-1;
     }
 
-    @Override
     public int size() {
         return size;
     }
 
-    @Override
     public boolean isEmpty() {
         return size == 0;
     }
 
-    @Override
     public boolean containsKey(Object key) {
         return table[index(key)] != null;
     }
 
-    @Override
     public boolean containsValue(Object value) {
         for(int i = 0; i < table.length; i++) {
             if(table[i] == null) continue;
@@ -52,7 +48,6 @@ public class HashMap<K, V> implements Map<K,V> {
         return false;
     }
 
-    @Override
     public V get(Object key) {
         if(key == null) return getForNullKey();
 
@@ -75,7 +70,6 @@ public class HashMap<K, V> implements Map<K,V> {
         return null;
     }
 
-    @Override
     public V put(K key, V value) {
         if(key == null) return putForNullKey(value);
 
@@ -121,8 +115,11 @@ public class HashMap<K, V> implements Map<K,V> {
     }
 
     private final void resize() {
+        int capacity = table.length<<1; // capacity is always power of two
         Entry[] oldTable = table;
-        initTable(table.length<<1);
+
+        initTable(capacity);
+
         for(int i = 0; i < oldTable.length; i++) {
             for(Entry<K,V> entry = oldTable[i]; entry != null; entry = entry.next) {
                 int hash = hash(entry.key);
@@ -132,43 +129,99 @@ public class HashMap<K, V> implements Map<K,V> {
         }
     }
 
-    @Override
     public V remove(Object key) {
+        Entry<K,V> entry = removeEntry(key);
+        return (entry == null ? null : entry.value);
+    }
+
+    private final Entry<K, V> removeEntry(Object key) {
+        if(key == null) return removeForNullKey();
+
+        int hash = hash(key);
+        int index = index(hash);
+
+        Entry<K,V> entry = table[index];
+
+        if(entry.key.hashCode() == hash && key.equals(entry.key)) {
+            table[index] = entry.next;
+            --size;
+            return entry;
+        }
+
+        for(Entry<K,V> curr = entry.next; curr != null; curr = entry.next) {
+            if(curr.key.hashCode() == hash && key.equals(curr.key)) {
+                entry.next = curr.next;
+                --size;
+                return curr;
+            }
+        }
+
         return null;
     }
 
-    @Override
-    public void putAll(Map<? extends K, ? extends V> m) {
+    private final Entry<K, V> removeForNullKey() {
+        Entry<K,V> entry = table[0];
 
+        if(entry.key == null) {
+            table[0] = entry.next;
+            --size;
+            return entry;
+        }
+
+        for(Entry<K,V> curr = entry.next; curr != null; curr = entry.next) {
+            if(curr.key == null) {
+                entry.next = curr.next;
+                --size;
+                return curr;
+            }
+        }
+
+        return null;
     }
 
-    @Override
+    public void putAll(Map<? extends K, ? extends V> map) {
+        for(Map.Entry<? extends K, ? extends V> entry : map.entrySet()) {
+            put(entry.getKey(), entry.getValue());
+        }
+    }
+
     public void clear() {
-
+        Arrays.fill(table, null);
+        size = 0;
     }
 
-    @Override
     public Set<K> keySet() {
-        return null;
+        // TODO: improve this method
+        Set<K> keys = new HashSet<K>(size);
+        for(int i = 0; i < table.length; i++) {
+            for(Entry<K,V> entry = table[i]; entry != null; entry = entry.next) {
+                keys.add(entry.key);
+            }
+        }
+        return keys;
     }
 
-    @Override
     public Collection<V> values() {
+        // TODO: improve this method
         V[] values = (V[]) new Object[size];
         int n = 0;
         for(int i = 0; i < table.length; i++) {
             for(Entry<K,V> entry = table[i]; entry != null; entry = entry.next) {
-                if(entry != null) {
-                    values[n++] = entry.getValue();
-                }
+                values[n++] = entry.value;
             }
         }
         return Arrays.asList(values);
     }
 
-    @Override
     public Set<Map.Entry<K, V>> entrySet() {
-        return null;
+        // TODO: improve this method
+        Set<Map.Entry<K, V>> keys = new HashSet<Map.Entry<K, V>>(size);
+        for(int i = 0; i < table.length; i++) {
+            for(Entry<K,V> entry = table[i]; entry != null; entry = entry.next) {
+                keys.add(entry);
+            }
+        }
+        return keys;
     }
 
     static class Entry<K,V> implements Map.Entry<K,V> {
@@ -185,26 +238,19 @@ public class HashMap<K, V> implements Map<K,V> {
             next = entry;
         }
 
-        @Override
         public K getKey() {
             return key;
         }
 
-        @Override
         public V getValue() {
             return value;
         }
 
-        @Override
         public V setValue(V newValue) {
             V oldValue = value;
             value = newValue;
             return oldValue;
         }
-    }
-
-    public final int capacity() {
-        return table.length;
     }
 
     private final int index(int hash) {
@@ -222,6 +268,7 @@ public class HashMap<K, V> implements Map<K,V> {
     }
 
     private static final int hash(Object key) {
-        return key.hashCode();
+        // TODO: improve this method to ensure better hash distribution
+        return (key == null ? 0 : key.hashCode());
     }
 }

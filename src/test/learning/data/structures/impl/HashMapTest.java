@@ -6,11 +6,10 @@ import org.junit.Test;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.emptyCollectionOf;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 
 /**
  * Created by ramanaue on 11/06/2015.
@@ -75,10 +74,24 @@ public class HashMapTest {
     }
 
     @Test
+    public void testPutAll() {
+        Map<String, String> temp = new java.util.HashMap<String, String>();
+        temp.put(KEY_1, VALUE_1);
+        temp.put(KEY_2, VALUE_2);
+
+        map.putAll(temp);
+        assertThat(map.size(), equalTo(2));
+        assertThat(map.isEmpty(), equalTo(false));
+        assertThat(map.values().size(), equalTo(2));
+        assertThat(map.get(KEY_1), equalTo(VALUE_1));
+        assertThat(map.get(KEY_2), equalTo(VALUE_2));
+    }
+
+    @Test
     public void testGet() {
         map.put(KEY_1, VALUE_1);
-        assertThat(map.get(KEY_1), equalTo(VALUE_1));
         map.put(null, VALUE_2);
+        assertThat(map.get(KEY_1), equalTo(VALUE_1));
         assertThat(map.get(null), equalTo(VALUE_2));
     }
 
@@ -99,9 +112,64 @@ public class HashMapTest {
         assertThat(map.values(), emptyCollectionOf(String.class));
 
         map.put(KEY_1, VALUE_1);
+        map.put(KEY_2, VALUE_2);
         Collection<String> values = map.values();
 
-        assertThat(values.size(), equalTo(1));
-        assertThat(values, contains(VALUE_1));
+        assertThat(values.size(), equalTo(2));
+        assertThat(values.contains(VALUE_1), equalTo(true));
+        assertThat(values.contains(VALUE_2), equalTo(true));
+    }
+
+    @Test
+    public void testKeySet() {
+        assertThat(map.keySet(), emptyCollectionOf(String.class));
+
+        map.put(KEY_1, VALUE_1);
+        map.put(null, VALUE_2);
+        Set<String> values = map.keySet();
+
+        assertThat(values.size(), equalTo(2));
+        assertThat(values.contains(KEY_1), equalTo(true));
+        assertThat(values.contains(null), equalTo(true));
+    }
+
+    @Test
+    public void testEntrySet() {
+        map.put(KEY_1, VALUE_1);
+        Set<Map.Entry<String, String>> entries = map.entrySet();
+        assertThat(entries.size(), equalTo(1));
+
+        Map.Entry<String, String> entry = (Map.Entry<String, String>) entries.toArray()[0];
+        assertThat(entry.getKey(), equalTo(KEY_1));
+        assertThat(entry.getValue(), equalTo(VALUE_1));
+    }
+
+    @Test
+    public void testRemove() {
+        map.put(KEY_1, VALUE_1);
+        map.put(null, VALUE_2);
+
+        assertThat(map.remove(KEY_1), equalTo(VALUE_1));
+        assertThat(map.size(), equalTo(1));
+        assertThat(map.containsKey(KEY_1), equalTo(false));
+        assertThat(map.containsKey(null), equalTo(true));
+
+        assertThat(map.remove(null), equalTo(VALUE_2));
+        assertThat(map.size(), equalTo(0));
+        assertThat(map.containsKey(KEY_1), equalTo(false));
+        assertThat(map.containsKey(null), equalTo(false));
+    }
+
+    @Test
+    public void testClear() {
+        map.put(KEY_1, VALUE_1);
+        map.put(KEY_2, VALUE_2);
+        map.clear();
+
+        assertThat(map.size(), equalTo(0));
+        assertThat(map.isEmpty(), equalTo(true));
+        assertThat(map.values().size(), equalTo(0));
+        assertThat(map.containsKey(KEY_1), equalTo(false));
+        assertThat(map.containsKey(KEY_2), equalTo(false));
     }
 }
