@@ -10,12 +10,10 @@ import java.util.Arrays;
  */
 public class MergeSort implements SortStrategy {
 
-    @Override
     public void sort(Comparable[] array) {
         sort(array, false);
     }
 
-    @Override
     public void sort(Comparable[] array, boolean reverse) {
         if (array.length > 1) {
             int half = array.length / 2;

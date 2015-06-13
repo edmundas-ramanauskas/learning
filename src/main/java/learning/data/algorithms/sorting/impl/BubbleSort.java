@@ -8,12 +8,10 @@ import static learning.util.SortUtil.compare;
  */
 public class BubbleSort implements SortStrategy {
 
-    @Override
     public void sort(Comparable[] array) {
         sort(array, false);
     }
 
-    @Override
     public void sort(Comparable[] array, boolean reverse) {
         for (int i = array.length - 1; i > 0; i--) {
             for (int n = 0; n < i; n++) {

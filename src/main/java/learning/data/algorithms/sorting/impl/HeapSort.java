@@ -12,7 +12,6 @@ public class HeapSort implements SortStrategy {
     private int size;
     private boolean reverse = false;
 
-    @Override
     public void sort(Comparable[] array) {
         this.data = array;
         this.size = array.length;
@@ -23,7 +22,6 @@ public class HeapSort implements SortStrategy {
 
     }
 
-    @Override
     public void sort(Comparable[] array, boolean reverse) {
         this.reverse = reverse;
         sort(array);

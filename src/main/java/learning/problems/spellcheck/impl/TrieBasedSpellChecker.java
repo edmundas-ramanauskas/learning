@@ -1,6 +1,6 @@
 package learning.problems.spellcheck.impl;
 
-import learning.data.structures.TrieNode;
+import learning.data.structures.impl.TrieNode;
 import learning.problems.spellcheck.SpellChecker;
 
 import java.util.LinkedHashSet;
@@ -28,17 +28,14 @@ public class TrieBasedSpellChecker implements SpellChecker {
         }
     }
 
-    @Override
     public boolean exists(String search) {
         return trie.exists(search);
     }
 
-    @Override
     public Set<String> findSimilar(String search) {
         return find(search, similar);
     }
 
-    @Override
     public Set<String> find(String search, int diff) {
         Set<String> matches = new LinkedHashSet<String>();
 

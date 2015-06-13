@@ -25,7 +25,6 @@ public class SimpleSpellChecker implements SpellChecker {
         this.similar = similar;
     }
 
-    @Override
     public boolean exists(String search) {
 //        return check(search) == 0;
         return dictionary.contains(search);
@@ -41,12 +40,10 @@ public class SimpleSpellChecker implements SpellChecker {
         return result;
     }
 
-    @Override
     public Set<String> findSimilar(String search) {
         return find(search, similar);
     }
 
-    @Override
     public Set<String> find(String search, int diff) {
         Set<String> matches = new LinkedHashSet<String>();
         int min = search.length() - diff;

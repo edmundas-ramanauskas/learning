@@ -1,4 +1,4 @@
-package learning.data.structures;
+package learning.data.structures.impl;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -4,19 +4,19 @@ import learning.data.algorithms.sorting.SortStrategy;
 import org.junit.Before;
 import org.junit.Test;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 
 /**
  * Created by edmundas on 15.6.11.
  */
-public class BubbleSortTest {
+public class MergeSortTest {
 
     private SortStrategy sortStrategy;
 
     @Before
     public void before() {
-        sortStrategy = new BubbleSort();
+        sortStrategy = new MergeSort();
     }
 
     @Test
