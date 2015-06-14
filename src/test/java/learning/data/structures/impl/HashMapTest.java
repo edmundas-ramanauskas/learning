@@ -107,9 +107,7 @@ public class HashMapTest {
     }
 
     @Test
-    public void testValues() {
-//        assertThat(map.values(), emptyCollectionOf(String.class));
-
+    public void testValues() {;
         map.put(KEY_1, VALUE_1);
         map.put(KEY_2, VALUE_2);
         Collection<String> values = map.values();
@@ -121,8 +119,6 @@ public class HashMapTest {
 
     @Test
     public void testKeySet() {
-//        assertThat(map.keySet(), emptyCollectionOf(String.class));
-
         map.put(KEY_1, VALUE_1);
         map.put(null, VALUE_2);
         Set<String> values = map.keySet();

@@ -26,8 +26,8 @@ public class LinkedList<E> implements List<E> {
         return (size == 0);
     }
 
-    public boolean contains(Object o) {
-        return false;
+    public boolean contains(Object obj) {
+        return (indexOf(obj) != -1);
     }
 
     public Iterator<E> iterator() {
@@ -43,10 +43,14 @@ public class LinkedList<E> implements List<E> {
     }
 
     public boolean add(E item) {
-        if(size == 0) {
-            first = last = new Node<E>(null, item, null);
+        Node<E> node = last;
+        last = createNode(item, node, null);
+        if(node == null) {
+            first = last;
+        } else {
+            node.next = last;
         }
-        return true;
+        return (++size > 0);
     }
 
     public boolean remove(Object o) {
@@ -78,6 +82,12 @@ public class LinkedList<E> implements List<E> {
     }
 
     public E get(int index) {
+        int i = 0;
+        for(Node<E> node = first; node != null; node = node.next) {
+            if(i++ == index) {
+                return node.item;
+            }
+        }
         return null;
     }
 
@@ -86,19 +96,42 @@ public class LinkedList<E> implements List<E> {
     }
 
     public void add(int index, E element) {
-
+        int i = 0;
+        for(Node<E> node = first; node != null; node = node.next) {
+            if(i == index) {
+                
+            }
+        }
     }
 
     public E remove(int index) {
         return null;
     }
 
-    public int indexOf(Object o) {
-        return 0;
+    public int indexOf(Object obj) {
+        int index = 0;
+        for(Node<E> node = first; node != null; node = node.next) {
+            if(obj == null && node.item == null) {
+                return index;
+            } else if(obj.equals(node.item)) {
+                return index;
+            }
+            index++;
+        }
+        return -1;
     }
 
-    public int lastIndexOf(Object o) {
-        return 0;
+    public int lastIndexOf(Object obj) {
+        int index = size;
+        for(Node<E> node = last; node != null; node = node.prev) {
+            index--;
+            if(obj == null && node.item == null) {
+                return index;
+            } else if(obj.equals(node.item)) {
+                return index;
+            }
+        }
+        return -1;
     }
 
     public ListIterator<E> listIterator() {
@@ -123,5 +156,13 @@ public class LinkedList<E> implements List<E> {
             this.next = next;
             this.prev = prev;
         }
+    }
+
+    private final Node<E> createNode(E item) {
+        return createNode(item, null, null);
+    }
+
+    private final Node<E> createNode(E item, Node prev, Node next) {
+        return new Node<E>(prev, item, next);
     }
 }
