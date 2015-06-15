@@ -32,7 +32,7 @@ public class LinkedListTest {
 
     @Test
     public void testAddWithIndex() {
-        list.add(VALUE_1);
+        list.add(0, VALUE_1);
         list.add(VALUE_2);
         list.add(0, VALUE_3);
 

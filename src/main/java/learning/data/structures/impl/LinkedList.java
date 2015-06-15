@@ -91,16 +91,27 @@ public class LinkedList<E> implements List<E> {
         return null;
     }
 
-    public E set(int index, E element) {
+    public E set(int index, E item) {
         return null;
     }
 
-    public void add(int index, E element) {
+    public void add(int index, E item) {
         int i = 0;
         for(Node<E> node = first; node != null; node = node.next) {
             if(i == index) {
-                
+                Node<E> newNode = createNode(item, node.prev, node);
+                if(node.prev != null) {
+                    node.prev.next = newNode;
+                } else {
+                    first = newNode;
+                }
+                node.prev = newNode;
+                size++;
             }
+            i++;
+        }
+        if(size == 0) {
+            first = last = createNode(item, null, null);
         }
     }
 
